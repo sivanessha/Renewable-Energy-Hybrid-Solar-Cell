@@ -1,0 +1,28 @@
+Ns[Eg_] := 
+ Rs^2/d^2* (2 \[Pi])/((hc)^2*h)*
+  NIntegrate[E1^2/(Exp[E1/(k*Ts)] - 1), {E1, Eg, Infinity}]
+Rs = 6.96*10^8;
+d = 1.496*10^8;
+Ts = 5778;
+\[Sigma] = 5.670374419*10^-8;
+h1 = 6.62607015*10^-34;
+h = 4.136*10^-15;
+hc = 1.240*10^-6;
+c = 299792458;
+k = 8.617*10^-5;
+e = 1.60218*10^-19;
+\[Eta][Eg_] :=  1/(Rs^2/d^2*\[Sigma]/e*Ts^4)* Eg*Ns[Eg]
+Nt[Eg_, T_] := (4 \[Pi])/((hc)^2*h)*
+  NIntegrate[E1^2/(Exp[E1/(k*T)] - 1), {E1, Eg, Infinity}]
+\[Eta]2 [V_, Eg_, T_] := 
+ V/(Rs^2/d^2*\[Sigma]/e*Ts^4)*(Ns[Eg] + Nt[Eg, T]*(1 - Exp[V/(k*T)]))
+ 
+ max1[V_, Eg_, T_] := FindMaximum[\[Eta]2[V, Eg, T], {V, 1.3}]
+ 
+ Plot3D[\[Eta]2[x, y], {x, 0, 1.5}, {y, 1, 1.5}, 
+ AxesLabel -> {"Voltage", "Energy Gap, Eg", "Efficiency"}]
+
+Plot[FindMaximum[\[Eta]2[x, y, t], {x, 0, 1.2}, {y, 1, 1.1}][[1]], {t,
+   300, 600}, AxesLabel -> {"Temperature", "Efficiency"}, 
+ PlotLabel -> 
+  HoldForm[ Ideal Efficiency of Solar Cell  dependant on T]]
